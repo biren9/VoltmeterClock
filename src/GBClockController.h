@@ -17,6 +17,12 @@ class GBClockController {
         uint8_t pinSecond;
         uint8_t pinMinute;
         uint8_t pinHour;
+
+        int16_t lastSecond;
+        int16_t lastMinute;
+        int16_t lastHour;
+
+        void set(uint8_t pin, int16_t value, int16_t* lastValue);
 };
 
 #endif

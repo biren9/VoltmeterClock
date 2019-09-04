@@ -18,25 +18,22 @@ void setup(){
   pinMode(PIN_WLAN_STATUS, OUTPUT);
 
   WiFi.begin(ssid, password);
-  clockController->callibrate(2000);
-  while ( WiFi.status() != WL_CONNECTED ) {
-    delay ( 500 );
-    Serial.print ( "." );
-  }
+  do {
+    clockController->callibrate(500);
+  } while ( WiFi.status() != WL_CONNECTED );
   timeService->begin();
 }
 
 void loop() {
-  GBDateTime currentTime = timeService->currentTime();
-  clockController->updateTime(currentTime);
- 
-  Serial.printf("Time: %d.%d.%d   %d:%d:%d\n", currentTime.day, currentTime.month, currentTime.year, currentTime.hour, currentTime.minute, currentTime.second);
-
   if ( WiFi.status() != WL_CONNECTED ) {
     digitalWrite(PIN_WLAN_STATUS, LOW);
   } else {
     digitalWrite(PIN_WLAN_STATUS, HIGH);
   }
 
+  GBDateTime currentTime = timeService->currentTime();
+  clockController->updateTime(currentTime);
+ 
+  Serial.printf("Time: %d.%d.%d   %d:%d:%d\n", currentTime.day, currentTime.month, currentTime.year, currentTime.hour, currentTime.minute, currentTime.second);
   delay(500);
 }
