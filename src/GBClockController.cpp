@@ -2,11 +2,11 @@
 #include <Arduino.h>
 
 #define minPWMFrequencySecond 30
-#define maxPWMFrequencySecond 1020
+#define maxPWMFrequencySecond 1000
 #define minPWMFrequencyMinute 30
-#define maxPWMFrequencyMinute 1020
-#define minPWMFrequencyHour 30
-#define maxPWMFrequencyHour 1020
+#define maxPWMFrequencyMinute 1000
+#define minPWMFrequencyHour 35
+#define maxPWMFrequencyHour 1015
 #define maxSkippingSteps 50
 #define timeBetweenMaxSteps 50
 #define format_24H false
