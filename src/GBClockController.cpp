@@ -1,8 +1,12 @@
 #include <GBClockController.h>
 #include <Arduino.h>
 
-#define minPWMFrequency 30
-#define maxPWMFrequency 1000
+#define minPWMFrequencySecond 30
+#define maxPWMFrequencySecond 1020
+#define minPWMFrequencyMinute 30
+#define maxPWMFrequencyMinute 1020
+#define minPWMFrequencyHour 30
+#define maxPWMFrequencyHour 1020
 #define maxSkippingSteps 50
 #define timeBetweenMaxSteps 50
 #define format_24H false
@@ -22,21 +26,20 @@ GBClockController::~GBClockController() {
 }
 
 void GBClockController::updateTime(GBDateTime currentTime) {
-    this->set(this->pinSecond, map(currentTime.second, 0, 59, minPWMFrequency, maxPWMFrequency), &this->lastSecond);
-    this->set(this->pinMinute, map(currentTime.minute, 0, 59, minPWMFrequency, maxPWMFrequency), &this->lastMinute);
+    this->set(this->pinSecond, map(currentTime.second, 0, 59, minPWMFrequencySecond, maxPWMFrequencySecond), &this->lastSecond);
+    this->set(this->pinMinute, map(currentTime.minute, 0, 59, minPWMFrequencyMinute, maxPWMFrequencyMinute), &this->lastMinute);
     if (format_24H) {
-        this->set(this->pinHour, map(currentTime.hour, 0, 23, minPWMFrequency, maxPWMFrequency), &this->lastHour);
+        this->set(this->pinHour, map(currentTime.hour, 0, 23, minPWMFrequencyHour, maxPWMFrequencyHour), &this->lastHour);
     } else {
         int hour = (currentTime.hour-1) % 12;
-        this->set(this->pinHour, map(hour, 0, 11, minPWMFrequency, maxPWMFrequency), &this->lastHour);
+        this->set(this->pinHour, map(hour, 0, 11, minPWMFrequencyHour, maxPWMFrequencyHour), &this->lastHour);
     }
 }
 
 void GBClockController::turnOff() {
-
-    this->set(this->pinSecond, minPWMFrequency, &this->lastSecond);
-    this->set(this->pinMinute, minPWMFrequency, &this->lastMinute);
-    this->set(this->pinHour, minPWMFrequency, &this->lastHour);
+    this->set(this->pinSecond, minPWMFrequencySecond, &this->lastSecond);
+    this->set(this->pinMinute, minPWMFrequencyMinute, &this->lastMinute);
+    this->set(this->pinHour, minPWMFrequencyHour, &this->lastHour);
 }
 
 void GBClockController::set(uint8_t pin, int16_t value, int16_t* lastValue) {
@@ -62,18 +65,20 @@ void GBClockController::callibrate(int millisec) {
     Serial.println("Start callibrate");
     this->turnOff();
     delay(100);
-    for (int i=minPWMFrequency; i < maxPWMFrequency; ++i) {
+    int minimum = max(minPWMFrequencyHour, max(minPWMFrequencyMinute, minPWMFrequencySecond));
+    int maximum = min(maxPWMFrequencyHour, max(maxPWMFrequencyMinute, maxPWMFrequencySecond));
+    for (int i=minimum; i < maximum; ++i) {
 
         this->set(this->pinSecond, i, &this->lastSecond);
         this->set(this->pinMinute, i, &this->lastMinute);
         this->set(this->pinHour, i, &this->lastHour);
-        delay(max((millisec/2) / maxPWMFrequency, 1));
+        delay(max((millisec/2) / (maximum - minimum), 1));
     }
-    for (int i=maxPWMFrequency; i >= minPWMFrequency; --i) {
+    for (int i=maximum; i >= minimum; --i) {
         this->set(this->pinSecond, i, &this->lastSecond);
         this->set(this->pinMinute, i, &this->lastMinute);
         this->set(this->pinHour, i, &this->lastHour);
-        delay(max((millisec/2) / maxPWMFrequency, 1));
+        delay(max((millisec/2) / (maximum - minimum), 1));
     }
     this->turnOff();
     delay(100);
