@@ -31,7 +31,7 @@ void GBClockController::updateTime(GBDateTime currentTime) {
     if (format_24H) {
         this->set(this->pinHour, map(currentTime.hour, 0, 23, minPWMFrequencyHour, maxPWMFrequencyHour), &this->lastHour);
     } else {
-        int hour = (currentTime.hour-1) % 12;
+        int hour = (12 + currentTime.hour-1) % 12;
         this->set(this->pinHour, map(hour, 0, 11, minPWMFrequencyHour, maxPWMFrequencyHour), &this->lastHour);
     }
 }
