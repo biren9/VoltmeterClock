@@ -22,7 +22,9 @@ GBClockController::GBClockController(uint8_t pinSecond, uint8_t pinMinute, uint8
 }
 
 GBClockController::~GBClockController() {
-    //
+    this->set(this->pinSecond, 0, &this->lastSecond);
+    this->set(this->pinMinute, 0, &this->lastMinute);
+    this->set(this->pinHour, 0, &this->lastHour);
 }
 
 void GBClockController::updateTime(GBDateTime currentTime) {
