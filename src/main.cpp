@@ -1,5 +1,8 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
+#include <DNSServer.h>
+#include <ESP8266WebServer.h>
+#include <WiFiManager.h>    
 #include <GBTime.h>
 #include <GBClockController.h>
 
@@ -8,16 +11,15 @@
 #define PIN_CLOCK_MINUTE 14
 #define PIN_CLOCK_HOUR 12
 
-const char *ssid =  "<SSID>";
-const char *password = "<Password>";
+WiFiManager wifiManager;
 GBTime *timeService = new GBTime();
 GBClockController *clockController = new GBClockController(PIN_CLOCK_SECOND, PIN_CLOCK_MINUTE, PIN_CLOCK_HOUR);
 
 void setup(){
   Serial.begin(9600);
   pinMode(PIN_WLAN_STATUS, OUTPUT);
-
-  WiFi.begin(ssid, password);
+  wifiManager.autoConnect("VoltmeterClock", "11111111");
+  
   do {
     clockController->callibrate(500);
   } while ( WiFi.status() != WL_CONNECTED );
@@ -35,5 +37,5 @@ void loop() {
   clockController->updateTime(currentTime);
  
   Serial.printf("Time: %d.%d.%d   %d:%d:%d\n", currentTime.day, currentTime.month, currentTime.year, currentTime.hour, currentTime.minute, currentTime.second);
-  delay(500);
+  delay(200);
 }
