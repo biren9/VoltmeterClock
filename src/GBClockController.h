@@ -14,13 +14,16 @@ class GBClockController {
         void callibrate(int millisec);
 
     private:
+        unsigned long millisOffset;
         uint8_t pinSecond;
         uint8_t pinMinute;
         uint8_t pinHour;
 
-        int16_t lastSecond;
-        int16_t lastMinute;
-        int16_t lastHour;
+        int8_t lastSecond;
+
+        int16_t lastPWMSecond;
+        int16_t lastPWMMinute;
+        int16_t lastPWMHour;
 
         void set(uint8_t pin, int16_t value, int16_t* lastValue);
 };

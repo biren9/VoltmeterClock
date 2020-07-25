@@ -36,6 +36,6 @@ void loop() {
   GBDateTime currentTime = timeService->currentTime();
   clockController->updateTime(currentTime);
  
-  Serial.printf("Time: %d.%d.%d   %d:%d:%d\n", currentTime.day, currentTime.month, currentTime.year, currentTime.hour, currentTime.minute, currentTime.second);
-  delay(200);
+  // Serial.printf("Time: %d.%d.%d   %d:%d:%d\n", currentTime.day, currentTime.month, currentTime.year, currentTime.hour, currentTime.minute, currentTime.second);
+  delay(1);
 }
