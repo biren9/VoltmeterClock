@@ -24,6 +24,9 @@ void setup(){
     clockController->callibrate(500);
   } while ( WiFi.status() != WL_CONNECTED );
   timeService->begin();
+  GBDateTime currentTime = timeService->currentTime();
+  Serial.printf("Time: %d.%d.%d   %d:%d:%d\n", currentTime.day, currentTime.month, currentTime.year, currentTime.hour, currentTime.minute, currentTime.second);
+  Serial.end();
 }
 
 void loop() {
@@ -35,7 +38,5 @@ void loop() {
 
   GBDateTime currentTime = timeService->currentTime();
   clockController->updateTime(currentTime);
- 
-  // Serial.printf("Time: %d.%d.%d   %d:%d:%d\n", currentTime.day, currentTime.month, currentTime.year, currentTime.hour, currentTime.minute, currentTime.second);
-  delay(1);
+  delay(clockController->timoutBetweenUpdates());
 }

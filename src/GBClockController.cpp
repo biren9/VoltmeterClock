@@ -19,6 +19,7 @@ GBClockController::GBClockController(uint8_t pinSecond, uint8_t pinMinute, uint8
     this->pinMinute = pinMinute;
     this->pinHour = pinHour;
 
+    analogWriteFreq(1000);
     pinMode(pinSecond, OUTPUT);
     pinMode(pinMinute, OUTPUT);
     pinMode(pinHour, OUTPUT);
@@ -58,6 +59,9 @@ void GBClockController::turnOff() {
 }
 
 void GBClockController::set(uint8_t pin, int16_t value, int16_t* lastValue) {
+    if (value == *lastValue) {
+        return;
+    }
 
     int16_t difference = *lastValue - value;
 
@@ -98,4 +102,12 @@ void GBClockController::callibrate(int millisec) {
     this->turnOff();
     delay(100);
     Serial.println("End callibrate");
+}
+
+int GBClockController::timoutBetweenUpdates() {
+    if(smoothSeconds) {
+        return max(pwmSecondStep - 5, 1);
+    } else {
+        return 200;
+    }
 }

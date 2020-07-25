@@ -12,6 +12,7 @@ class GBClockController {
         void updateTime(GBDateTime currentTime);
         void turnOff();
         void callibrate(int millisec);
+        int timoutBetweenUpdates();
 
     private:
         unsigned long millisOffset;
