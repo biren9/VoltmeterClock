@@ -11,18 +11,16 @@
 #define PIN_CLOCK_MINUTE 14
 #define PIN_CLOCK_HOUR 12
 
-WiFiManager *wifiManager;
 GBTime *timeService;
 GBClockController *clockController;
 
 void setup() {
   Serial.begin(9600);
-  wifiManager = new WiFiManager();
+  WiFiManager *wifiManager = new WiFiManager();
   timeService = new GBTime(wifiManager);
   clockController = new GBClockController(PIN_CLOCK_SECOND, PIN_CLOCK_MINUTE, PIN_CLOCK_HOUR);
   pinMode(PIN_WLAN_STATUS, OUTPUT);
   WiFi.setSleepMode(WIFI_LIGHT_SLEEP);
-  Serial.println("Begin timeService");
   timeService->begin();
   do {
     clockController->callibrate(500);

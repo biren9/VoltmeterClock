@@ -26,6 +26,7 @@ class GBTime {
         Timezone *ce;
         time_t lastUpdateRTC;
         bool forceUpdate;
+        unsigned long wifiConnectTime;
 
 };
 
