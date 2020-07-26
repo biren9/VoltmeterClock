@@ -7,12 +7,13 @@ class WiFiUDP;
 class NTPClient;
 class GBDateTime;
 class Timezone;
+class WiFiManager;
 
 class GBTime {
     public:
         static const char* daysOfTheWeek[7][12];
 
-        GBTime();
+        GBTime(WiFiManager* manager);
         ~GBTime();
         void begin();
         void end();
@@ -20,6 +21,7 @@ class GBTime {
     
     private:
         WiFiUDP *ntpUDP;
+        WiFiManager* manager;
         NTPClient *timeClient;
         Timezone *ce;
         time_t lastUpdateRTC;

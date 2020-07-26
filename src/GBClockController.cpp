@@ -23,6 +23,14 @@ GBClockController::GBClockController(uint8_t pinSecond, uint8_t pinMinute, uint8
     pinMode(pinSecond, OUTPUT);
     pinMode(pinMinute, OUTPUT);
     pinMode(pinHour, OUTPUT);
+
+    analogWrite(pinSecond, 0);
+    analogWrite(pinMinute, 0);
+    analogWrite(pinHour, 0);
+
+    this->lastPWMSecond = 0;
+    this->lastPWMMinute = 0;
+    this->lastPWMHour = 0;
 }
 
 GBClockController::~GBClockController() {
