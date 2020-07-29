@@ -20,7 +20,7 @@ void setup() {
   timeService = new GBTime(wifiManager);
   clockController = new GBClockController(PIN_CLOCK_SECOND, PIN_CLOCK_MINUTE, PIN_CLOCK_HOUR);
   pinMode(PIN_WLAN_STATUS, OUTPUT);
-  WiFi.setSleepMode(WIFI_LIGHT_SLEEP);
+  WiFi.setSleepMode(WIFI_MODEM_SLEEP);
   timeService->begin();
   do {
     clockController->callibrate(500);
