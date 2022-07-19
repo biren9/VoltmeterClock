@@ -20,6 +20,7 @@ GBClockController::GBClockController(uint8_t pinSecond, uint8_t pinMinute, uint8
     this->pinHour = pinHour;
 
     analogWriteFreq(1000);
+    analogWriteRange(1023);
     pinMode(pinSecond, OUTPUT);
     pinMode(pinMinute, OUTPUT);
     pinMode(pinHour, OUTPUT);
